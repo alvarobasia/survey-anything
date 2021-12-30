@@ -11,24 +11,22 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
-  surveys   Survey[]
-  Option    Option?  @relation(fields: [optionId], references: [id])
-  optionId  Int?
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  name     String?
+  surveys  Survey[]
+  Option   Option[]
 }
 
 model Survey {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  description String   @db.VarChar(255)
-  title       String   @db.VarChar(100)
-  User        User?    @relation(fields: [userId], references: [id])
-  userId      Int?
-  options     Option[]
+  id       Int      @id @default(autoincrement())
+  title    String   @db.VarChar(100)
+  User     User?    @relation(fields: [userId], references: [id])
+  userId   Int?
+  initDate DateTime
+  endDate  DateTime
+  options  Option[]
 }
 
 model Option {
@@ -37,5 +35,5 @@ model Option {
   numberOfVotes Int     @db.Integer
   Survey        Survey? @relation(fields: [surveyId], references: [id])
   surveyId      Int?
-  voters        User[]
+  users         User[]
 }
