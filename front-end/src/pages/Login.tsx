@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Flex,
   Input,
@@ -16,6 +16,8 @@ import { FaUserAlt, FaLock } from "react-icons/fa";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { MdEmail } from "react-icons/md";
+import { loginService } from "../services/loginService";
+import { AuthContext } from "../contexts/AuthContext";
 
 const CMdEmail = chakra(MdEmail);
 
@@ -27,8 +29,14 @@ const CAiFillEyeInvisible = chakra(AiFillEyeInvisible);
 const Login = () => {
   const nav = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { singIn } = useContext(AuthContext);
   const handleShowClick = () => setShowPassword(!showPassword);
+  function handleSubmit() {
+    singIn(email, password);
+    nav("/home");
+  }
 
   return (
     <Flex
@@ -61,7 +69,12 @@ const Login = () => {
                     pointerEvents="none"
                     children={<CMdEmail color="gray.300" />}
                   />
-                  <Input type="email" placeholder="E-mail" />
+                  <Input
+                    type="email"
+                    placeholder="E-mail"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
                 </InputGroup>
               </FormControl>
               <FormControl>
@@ -73,6 +86,8 @@ const Login = () => {
                   />
                   <Input
                     type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="Senha"
                   />
                   <InputRightElement width="4.5rem">
@@ -88,11 +103,11 @@ const Login = () => {
               </FormControl>
               7
               <Button
-                type="submit"
                 variant="solid"
                 colorScheme="teal"
                 width="full"
                 borderRadius={"8px"}
+                onClick={handleSubmit}
               >
                 Login
               </Button>

@@ -7,7 +7,9 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { SurveyContext } from "../contexts/SurveyContext";
 
 // import { Container } from './styles';
 
@@ -16,7 +18,8 @@ const NewSurvey: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-
+  const { createSurvey } = useContext(SurveyContext);
+  const nav = useNavigate();
   function handleAddOption(text: string, optionIndex: number) {
     setOptions((options) => {
       const newOptions = [...options];
@@ -26,13 +29,14 @@ const NewSurvey: React.FC = () => {
   }
 
   function handleConfirmOption() {
-    if (endDate && startDate && endDate < startDate) {
-      const newOption: OptionFormFormat = {
-        name,
+    if (endDate && startDate && endDate > startDate) {
+      const newOption: SurveyInput = {
+        title: name,
         endDate,
-        startDate,
-        options: options.map((option) => ({ name: option })),
+        initDate: startDate,
+        options,
       };
+      createSurvey(newOption).then(() => nav("/home"));
     }
   }
 
@@ -166,6 +170,7 @@ const NewSurvey: React.FC = () => {
         w={"full"}
         bg={"#006666"}
         color={"white"}
+        onClick={handleConfirmOption}
       >
         Salvar enquete
       </Button>

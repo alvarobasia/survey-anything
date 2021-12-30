@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import SurveyCard from "./components/SurveyCard";
+import SurveyContainer from "./components/SurveyContainer";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NewSurvey from "./pages/NewSurvey";
@@ -15,22 +16,7 @@ const App = () => {
         path="home"
         element={
           <Home>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-evenly",
-                flexWrap: "wrap",
-              }}
-            >
-              <SurveyCard />
-              <SurveyCard />
-              <SurveyCard />
-              <SurveyCard />
-              <SurveyCard />
-              <SurveyCard />
-              <SurveyCard />
-              <SurveyCard />
-            </div>
+            <SurveyContainer />
           </Home>
         }
       />

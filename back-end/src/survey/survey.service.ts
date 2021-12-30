@@ -53,6 +53,7 @@ export class SurveyService {
   async findAll() {
     return await this.prisma.survey.findMany({
       include: {
+        User: true,
         options: {
           include: {
             users: true,

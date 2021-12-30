@@ -1,9 +1,13 @@
 import { IconType } from "react-icons";
+import { User } from "../contexts/AuthContext";
 
 declare global {
   export interface Option {
     id?: string;
-    name: string;
+    title: string;
+    numberOfVotes: number;
+    surveyId: string;
+    users: User[];
   }
   export interface LinkItemProps {
     name: string;
@@ -16,5 +20,21 @@ declare global {
     startDate: Date;
     endDate: Date;
     options: Option[];
+  }
+
+  export interface Survey {
+    id: number;
+    title: string;
+    initDate: Date;
+    endDate: Date;
+    User: User;
+    options: Option[];
+  }
+
+  export interface SurveyInput {
+    title: string;
+    initDate: Date;
+    endDate: Date;
+    options: string[];
   }
 }

@@ -9,13 +9,14 @@ import {
   chakra,
   Box,
   Text,
-  Link,
   FormControl,
   InputRightElement,
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { MdEmail } from "react-icons/md";
+import { createUserService } from "../services/createUserService";
+import { useNavigate } from "react-router-dom";
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 
@@ -24,8 +25,16 @@ const CAiFillEyeInvisible = chakra(AiFillEyeInvisible);
 const CMdEmail = chakra(MdEmail);
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const handleShowClick = () => setShowPassword(!showPassword);
+
+  function handleSubmit() {
+    createUserService(name, email, password).then(
+      () => (window.location.href = "http://localhost:3000")
+    );
+  }
 
   return (
     <Flex
@@ -61,7 +70,12 @@ const Register = () => {
                     pointerEvents="none"
                     children={<CMdEmail color="gray.300" />}
                   />
-                  <Input type="email" placeholder="E-mail" />
+                  <Input
+                    type="email"
+                    placeholder="E-mail"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
                 </InputGroup>
               </FormControl>
               <FormControl>
@@ -70,7 +84,12 @@ const Register = () => {
                     pointerEvents="none"
                     children={<CFaUserAlt color="gray.300" />}
                   />
-                  <Input type="text" placeholder="Nome" />
+                  <Input
+                    type="text"
+                    placeholder="Nome"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
                 </InputGroup>
               </FormControl>
               <FormControl>
@@ -83,6 +102,8 @@ const Register = () => {
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Senha"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                   <InputRightElement width="4.5rem">
                     <Button h="1.75rem" size="sm" onClick={handleShowClick}>
@@ -97,10 +118,10 @@ const Register = () => {
               </FormControl>
               7
               <Button
-                type="submit"
                 variant="solid"
                 colorScheme="teal"
                 width="full"
+                onClick={handleSubmit}
                 borderRadius={"8px"}
               >
                 Registar

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useContext, useEffect } from "react";
 import {
   IconButton,
   Avatar,
@@ -35,13 +35,12 @@ import {
 import { IconType } from "react-icons";
 import { useNavigate } from "react-router-dom";
 import { ReactText } from "react";
+import { SurveyContext } from "../contexts/SurveyContext";
+import { AuthContext } from "../contexts/AuthContext";
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Votações", icon: FiHome, path: "/" },
+  { name: "Votações", icon: FiHome, path: "/home" },
   { name: "Suas votações", icon: FiTrendingUp, path: "/surveys" },
-  { name: "Votações encerradas", icon: FiCompass, path: "/end" },
-  { name: "Votações ocorrendo neste momento", icon: FiStar, path: "/current" },
-  { name: "Perfil", icon: FiSettings, path: "/profile" },
 ];
 
 export default function SidebarWithHeader({
@@ -51,6 +50,16 @@ export default function SidebarWithHeader({
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const { getSurveys, surveys } = useContext(SurveyContext);
+  const { getAuthentication } = useContext(AuthContext);
+  useEffect(() => {
+    getAuthentication();
+    getSurveys();
+  }, []);
+
+  useEffect(() => {
+    console.log(surveys);
+  }, [surveys]);
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       <SidebarContent
@@ -155,6 +164,8 @@ interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const { user } = useContext(AuthContext);
+  const nav = useNavigate();
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -199,7 +210,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Justina Clark</Text>
+                  <Text fontSize="sm">{user?.name}</Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
                   <FiChevronDown />
@@ -210,9 +221,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem>Profile</MenuItem>
+              <MenuItem onClick={() => nav("/surveys")}>Suas votações</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={() => nav("/")}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
