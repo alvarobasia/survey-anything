@@ -25,7 +25,7 @@ const SurveyContainer: React.FC = () => {
       }}
     >
       {surveys.map((survey) => {
-        if (user && survey.User.id !== user.id) {
+        if (user && survey.User && survey.User.id !== user.id) {
           return (
             <SurveyCard
               handleVote={handleVote}

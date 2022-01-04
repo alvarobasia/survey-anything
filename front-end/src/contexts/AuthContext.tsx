@@ -47,19 +47,19 @@ export function AuthProvider(props: PropsWithChildren<any>) {
   }
 
   async function getAuthentication() {
-    try {
-      const { data } = await getUserService();
-      setIsAuthenticated(true);
-      setUser({
-        id: data.id,
-        username: data.name,
-        email: data.email,
-        name: data.name,
-      });
-      return true;
-    } catch (err) {
-      return false;
-    }
+    // try {
+    //   const { data } = await getUserService();
+    //   setIsAuthenticated(true);
+    //   setUser({
+    //     id: data.id,
+    //     username: data.name,
+    //     email: data.email,
+    //     name: data.name,
+    //   });
+    //   return true;
+    // } catch (err) {
+    return false;
+    // }
   }
 
   return (
